@@ -2,8 +2,6 @@
 
 namespace Jeoip\Common;
 
-use Exception;
-
 class Utilities
 {
     public static function isIp(string $ip): bool
@@ -24,11 +22,11 @@ class Utilities
     public static function ipToDec(string $ip): string
     {
         if (!extension_loaded('gmp')) {
-            throw new Exception("'gmp' extension is not available");
+            throw new \Exception("'gmp' extension is not available");
         }
         $bytes = inet_pton($ip);
         if (false === $bytes) {
-            throw new Exception();
+            throw new \Exception();
         }
         $number = gmp_import($bytes);
 
@@ -38,7 +36,7 @@ class Utilities
     public static function decToIp(string $number, int $ver = 0): string
     {
         if (!extension_loaded('gmp')) {
-            throw new Exception("'gmp' extension is not available");
+            throw new \Exception("'gmp' extension is not available");
         }
         $number = gmp_init($number, 10);
         switch ($ver) {
@@ -61,7 +59,7 @@ class Utilities
 
         $ip = inet_ntop($packed);
         if (false === $ip) {
-            throw new Exception();
+            throw new \Exception();
         }
 
         return $ip;
