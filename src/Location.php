@@ -8,11 +8,13 @@ use Jeoip\Contracts\ILocation;
 
 class Location implements ILocation
 {
+    protected string $query;
     protected string $countryCode;
     protected ICidr $subnet;
 
-    public function __construct(string $countryCode, ICidr $subnet)
+    public function __construct(string $query, string $countryCode, ICidr $subnet)
     {
+        $this->setQuery($query);
         $this->setCountryCode($countryCode);
         $this->setSubnet($subnet);
     }
@@ -30,6 +32,16 @@ class Location implements ILocation
         return $this->countryCode;
     }
 
+    public function setQuery(string $query): void
+    {
+        $this->query = $query;
+    }
+
+    public function getQuery(): string
+    {
+        return $this->query;
+    }
+
     public function setSubnet(ICidr $subnet): void
     {
         $this->subnet = $subnet;
@@ -41,11 +53,12 @@ class Location implements ILocation
     }
 
     /**
-     * @return array{countryCode:string,subnet:string}
+     * @return array{qurey:string,countryCode:string,subnet:string}
      */
     public function jsonSerialize(): array
     {
         return [
+            'query' => $this->query,
             'countryCode' => $this->countryCode,
             'subnet' => $this->subnet->__toString(),
         ];
